@@ -51,6 +51,10 @@ app.post('/login', async (req, res) => {
 
 app.get('/profile', (req, res) => {
     const { token } = req.cookies;
+    if (!token) {
+        // Handle the case when the token is not provided
+        return res.status(401).json({ error: 'Token not provided' });
+      }
     jwt.verify(token, secret, {}, (err, info) => {
         if (err) throw err;
         res.json(info);
